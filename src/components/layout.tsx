@@ -35,6 +35,7 @@ export function Layout() {
           </div>
         )}
       </div>
+      <div className="fixed" />
       <Outlet />
     </main>
   );
