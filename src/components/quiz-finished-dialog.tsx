@@ -23,32 +23,33 @@ export function QuizFinishedDialog() {
           </div>
         ) : (
           <>
-            <div className="flex flex-1 flex-col items-center justify-center gap-6">
+            <div className="flex w-full flex-1 flex-col items-center justify-center gap-6">
               <span className="text-base font-medium lg:text-lg">
                 Congrats you just finished the quiz!
               </span>
-              <div className="flex flex-col items-center gap-2">
-                <span>You got</span>
-                <div className="flex items-center gap-4">
-                  <div className="space-y-2 text-center">
-                    <div className="text-xl font-semibold">
-                      {userQuizData.result.answered} / 10
-                    </div>
-                    <div>Answered</div>
+              <div className="grid w-full grid-cols-3 gap-2 lg:gap-4">
+                <div className="col-span-1 space-y-2  rounded-lg border px-4 py-2 shadow-sm">
+                  <div className="text-xs font-medium opacity-50 lg:text-sm">
+                    Answered
                   </div>
-                  <div className="space-y-2 text-center">
-                    <div className="text-xl font-semibold">
-                      {userQuizData.result.correct} /{" "}
-                      {userQuizData.result.answered}
-                    </div>
-                    <div>Correct</div>
+                  <div className="text-end font-medium">
+                    {userQuizData.result.answered}
                   </div>
-                  <div className="space-y-2 text-center">
-                    <div className="text-xl font-semibold">
-                      {userQuizData.result.wrong} /{" "}
-                      {userQuizData.result.answered}
-                    </div>
-                    <div>Wrong</div>
+                </div>
+                <div className="col-span-1 space-y-2  rounded-lg border px-4 py-2 shadow-sm">
+                  <div className="text-xs font-medium opacity-50 lg:text-sm">
+                    Correct
+                  </div>
+                  <div className="text-end font-medium">
+                    {userQuizData.result.correct}
+                  </div>
+                </div>
+                <div className="col-span-1 space-y-2  rounded-lg border px-4 py-2 shadow-sm">
+                  <div className="text-xs font-medium opacity-50 lg:text-sm">
+                    Wrong
+                  </div>
+                  <div className="text-end font-medium">
+                    {userQuizData.result.wrong}
                   </div>
                 </div>
               </div>
