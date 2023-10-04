@@ -6,6 +6,7 @@ export function SessionExistAlertModal() {
   const userQuizData = JSON.parse(
     localStorage.getItem(authSession.user?.email as string) as string,
   );
+
   return (
     <>
       <div className="absolute left-0 top-0 z-10 h-screen w-screen bg-slate-800 bg-opacity-50 backdrop-blur-sm" />

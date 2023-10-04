@@ -23,6 +23,7 @@ export function QuizCategorySelectPage() {
   const categorySkeletons = Array(10).fill(
     <div className="relative isolate h-16 w-40 overflow-hidden rounded-lg border bg-gray-300 before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-gray-200 before:to-transparent lg:h-20 lg:w-80" />,
   );
+
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-6">
       <div className="flex flex-col items-center gap-2 text-center">

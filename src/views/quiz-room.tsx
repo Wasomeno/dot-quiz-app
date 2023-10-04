@@ -2,7 +2,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useQuery } from "@tanstack/react-query";
 import { decode } from "he";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { CategoryNotValidScreen } from "../components/category-not-valid-screen";
 import { QuizFinishedDialog } from "../components/quiz-finished-dialog";
 import { QuizRoomCounter } from "../components/quiz-room-counter";
@@ -32,9 +32,11 @@ export function QuizRoomPage() {
     wrong: 0,
   });
 
+  const navigate = useNavigate();
+
   const authSession = useAuth0();
   const { categoryId } = useParams() as { categoryId: string };
-  const parsedCategoryId = parseInt(categoryId);
+  const [urlSearchParams] = useSearchParams();
 
   const { data: questionsData, isLoading: questionsDataLoading } = useQuery<
     Question[]
@@ -54,6 +56,7 @@ export function QuizRoomPage() {
 
   const questions = storageQuestions ?? questionsData;
   const activeQuestion = questions && questions[questionIndex];
+  const isQuizFinished = urlSearchParams.get("finished") !== null;
 
   function selectAnswer(answer: string) {
     const currentResult = {
@@ -67,7 +70,13 @@ export function QuizRoomPage() {
           ? result.wrong + 1
           : result.wrong,
     };
+
     const currentQuestionIndex = questionIndex + 1;
+
+    if (currentQuestionIndex === questions?.length) {
+      navigate(`${location.pathname}?finished=true`);
+    }
+
     localStorage.setItem(
       authSession.user?.email as string,
       JSON.stringify({
@@ -77,6 +86,7 @@ export function QuizRoomPage() {
         questionIndex: currentQuestionIndex,
       }),
     );
+
     setResult(currentResult);
     setQuestionIndex(currentQuestionIndex);
   }
@@ -110,9 +120,11 @@ export function QuizRoomPage() {
     }
   }, [authSession.isLoading, questionsDataLoading]);
 
-  if (parsedCategoryId < 9 || parsedCategoryId > 18)
+  if (parseInt(categoryId) < 9 || parseInt(categoryId) > 18)
     return <CategoryNotValidScreen />;
-  if (result.answered === 10) return <QuizFinishedDialog />;
+
+  if (questionIndex === 10 || isQuizFinished) return <QuizFinishedDialog />;
+
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-5 lg:gap-10">
       {questionsDataLoading && !storageQuestions ? (

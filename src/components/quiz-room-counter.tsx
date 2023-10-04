@@ -1,6 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 export function QuizRoomCounter() {
   const authSession = useAuth0();
@@ -14,13 +14,13 @@ export function QuizRoomCounter() {
 
   const timerIntervalRef = useRef<number>();
 
-  const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (timerCount === -1) {
       navigate(`${location.pathname}?finished=true`);
     }
+
     if (userQuizData) {
       localStorage.setItem(
         authSession.user?.email as string,
@@ -28,10 +28,12 @@ export function QuizRoomCounter() {
       );
     }
 
-    timerIntervalRef.current = setInterval(
-      () => setTimerCount((currentTimer) => currentTimer - 1),
-      1000,
-    );
+    if (timerCount !== -1) {
+      timerIntervalRef.current = setInterval(
+        () => setTimerCount((currentTimer) => currentTimer - 1),
+        1000,
+      );
+    }
 
     return () => {
       clearInterval(timerIntervalRef.current);
