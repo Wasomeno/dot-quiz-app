@@ -28,7 +28,7 @@ export function Timer() {
   }, [timerCount]);
 
   return (
-    <div>
+    <div className="text-sm lg:text-base">
       {`0${(timerCount / 60).toString()[0]}`} :
       {(timerCount % 60).toString().length < 2
         ? `0${(timerCount % 60).toString()}`
