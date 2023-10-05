@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { CategoryNotValidScreen } from "../components/category-not-valid-screen";
 import { QuizFinishedDialog } from "../components/quiz-finished-dialog";
-import { SessionExistAlertModal } from "../components/session-exist-alert-modal";
 import { Timer } from "../components/timer";
 import { useQuizStorage } from "../hooks/useQuizStorage";
 
@@ -80,6 +79,9 @@ export function QuizRoomPage() {
   useEffect(() => {
     if (questionIndex === 10) navigate(`${location.pathname}?finished=true`);
 
+    if (isQuizStorageDataExist && categoryId !== quizStorageData?.category?.id)
+      navigate(`/quiz`);
+
     if (!isQuizStorageDataExist && !isQuestionsLoading) {
       setQuizStorageData({
         ...quizStorageData,
@@ -93,9 +95,6 @@ export function QuizRoomPage() {
       });
     }
   }, [isQuestionsLoading]);
-
-  if (isQuizStorageDataExist && categoryId !== quizStorageData?.category?.id)
-    return <SessionExistAlertModal />;
 
   if (parseInt(categoryId) < 9 || parseInt(categoryId) > 18)
     return <CategoryNotValidScreen />;
