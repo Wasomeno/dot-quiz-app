@@ -17,13 +17,19 @@ export function SessionExistAlertModal() {
           <div className="space-y-2 text-center">
             <div className="font-medium lg:text-lg">{data.category?.name}</div>
             <div className="text-sm font-medium lg:text-base">
-              {data.answers?.length !== 10
-                ? `0${((data?.timer as number) / 60).toString()[0]} : ${
-                    ((data?.timer as number) % 60).toString().length < 2
-                      ? `0${((data?.timer as number) % 60).toString()}`
-                      : ((data?.timer as number) % 60).toString()
-                  } Left`
-                : "Finished"}
+              {!data.timer && "03 : 00 left"}
+
+              {data.timer &&
+                data.answers?.length !== data.questions?.length &&
+                `0${((data?.timer as number) / 60).toString()[0]} : ${
+                  ((data?.timer as number) % 60).toString().length < 2
+                    ? `0${((data?.timer as number) % 60).toString()}`
+                    : ((data?.timer as number) % 60).toString()
+                } Left`}
+
+              {data.timer &&
+                data.answers?.length === data.questions?.length &&
+                "Finished"}
             </div>
             <div className="text-sm font-medium lg:text-base">
               {data?.answers?.length} / 10 Answered
