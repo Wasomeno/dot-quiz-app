@@ -8,7 +8,7 @@ export function SessionExistAlertModal() {
       <div className="absolute left-0 top-0 z-10 h-screen w-screen bg-slate-800 bg-opacity-50 backdrop-blur-sm" />
       <dialog
         open
-        className="absolute bottom-0 z-20 flex h-5/6 w-full flex-1 flex-col items-center justify-center gap-4 rounded-lg bg-slate-50 p-6  lg:bottom-1/2 lg:h-4/6 lg:w-2/6 lg:translate-y-1/2"
+        className="absolute bottom-0 z-20 flex h-5/6 w-full flex-1 flex-col items-center justify-center gap-4 rounded-lg bg-slate-50 p-6 lg:bottom-1/2 lg:h-4/6 lg:w-2/6 lg:translate-y-1/2"
       >
         <div className="flex flex-1 flex-col justify-center gap-4">
           <span className="text-base font-medium lg:text-lg">
