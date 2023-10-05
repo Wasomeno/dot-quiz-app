@@ -4,7 +4,7 @@ export function HomePage() {
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
       <div className="space-y-2">
-        <h1 className="text-2xl font-semibold lg:text-5xl">
+        <h1 className="text-xl font-semibold lg:text-5xl">
           A Simple Quiz App
           <span className="text-base font-medium text-blue-600 lg:text-lg">
             {" "}
