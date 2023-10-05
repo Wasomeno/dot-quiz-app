@@ -14,7 +14,9 @@ export function UserMenuDialog() {
       </div>
       <div className="flex flex-1 flex-col justify-end px-6 py-4">
         <button
-          onClick={() => logout()}
+          onClick={() =>
+            logout({ logoutParams: { returnTo: window.location.origin } })
+          }
           className="text-start text-sm font-medium text-red-700"
         >
           Sign Out
