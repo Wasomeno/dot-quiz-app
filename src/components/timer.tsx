@@ -28,11 +28,13 @@ export function Timer() {
   }, [timerCount]);
 
   return (
-    <div className="text-sm lg:text-base">
-      {`0${(timerCount / 60).toString()[0]}`} :
-      {(timerCount % 60).toString().length < 2
-        ? `0${(timerCount % 60).toString()}`
-        : (timerCount % 60).toString()}
+    <div className="px-4 py-2">
+      <span className="text-sm lg:text-base">
+        {`0${(timerCount / 60).toString()[0]}`} :
+        {(timerCount % 60).toString().length < 2
+          ? `0${(timerCount % 60).toString()}`
+          : (timerCount % 60).toString()}
+      </span>
     </div>
   );
 }
