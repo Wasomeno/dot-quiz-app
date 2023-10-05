@@ -1,7 +1,7 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { SessionExistAlertModal } from "../components/session-exist-alert-modal";
+import { useQuizStorage } from "../hooks/useQuizStorage";
 
 type Category = {
   id: number;
@@ -9,15 +9,11 @@ type Category = {
 };
 
 export function QuizCategorySelectPage() {
+  const { isQuizStorageDataExist } = useQuizStorage();
   const categories = useQuery<Category[]>(["categories"], () =>
     fetch("https://opentdb.com/api_category.php")
       .then((response) => response.json())
       .then((response) => response.trivia_categories.slice(0, 10)),
-  );
-
-  const authSession = useAuth0();
-  const isSessionExist = localStorage.getItem(
-    authSession.user?.email as string,
   );
 
   const categorySkeletons = Array(10).fill(
@@ -53,7 +49,7 @@ export function QuizCategorySelectPage() {
           ))}
         </div>
       )}
-      {isSessionExist && <SessionExistAlertModal />}
+      {isQuizStorageDataExist && <SessionExistAlertModal />}
     </div>
   );
 }
