@@ -17,6 +17,18 @@ export function QuizFinishedDialog() {
     { correct: 0, wrong: 0 },
   );
 
+  const isQuizFinishedValid =
+    data.answers?.length === data.questions?.length || data.timer === -1;
+
+  function finishQuiz() {
+    removeQuizStorageData();
+    navigate("/quiz");
+  }
+
+  function backToSession() {
+    navigate(`/quiz/${data.category?.id}`);
+  }
+
   return createPortal(
     <>
       <div className="fixed left-0 top-0 z-10 h-screen w-screen bg-slate-800 bg-opacity-50 backdrop-blur-sm" />
@@ -26,38 +38,45 @@ export function QuizFinishedDialog() {
       >
         <div className="flex w-full flex-1 flex-col items-center justify-center gap-6">
           <span className="text-base font-medium lg:text-lg">
-            Congrats you just finished the quiz!
+            {isQuizFinishedValid
+              ? `Congrats you just
+            finished the quiz!`
+              : `You Haven't Finished the Quiz `}
           </span>
-          <div className="grid w-full grid-cols-3 gap-2 lg:gap-4">
-            <div className="col-span-1 space-y-2  rounded-lg border px-4 py-2 shadow-sm">
-              <div className="text-xs font-medium opacity-50 lg:text-sm">
-                Answered
+
+          {isQuizFinishedValid ? (
+            <div className="grid w-full grid-cols-3 gap-2 lg:gap-4">
+              <div className="col-span-1 space-y-2  rounded-lg border px-4 py-2 shadow-sm">
+                <div className="text-xs font-medium opacity-50 lg:text-sm">
+                  Answered
+                </div>
+                <div className="text-end font-medium">
+                  {data.answers?.length}
+                </div>
               </div>
-              <div className="text-end font-medium">{data.answers?.length}</div>
-            </div>
-            <div className="col-span-1 space-y-2  rounded-lg border px-4 py-2 shadow-sm">
-              <div className="text-xs font-medium opacity-50 lg:text-sm">
-                Correct
+              <div className="col-span-1 space-y-2  rounded-lg border px-4 py-2 shadow-sm">
+                <div className="text-xs font-medium opacity-50 lg:text-sm">
+                  Correct
+                </div>
+                <div className="text-end font-medium">{result?.correct}</div>
               </div>
-              <div className="text-end font-medium">{result?.correct}</div>
-            </div>
-            <div className="col-span-1 space-y-2  rounded-lg border px-4 py-2 shadow-sm">
-              <div className="text-xs font-medium opacity-50 lg:text-sm">
-                Wrong
+              <div className="col-span-1 space-y-2  rounded-lg border px-4 py-2 shadow-sm">
+                <div className="text-xs font-medium opacity-50 lg:text-sm">
+                  Wrong
+                </div>
+                <div className="text-end font-medium">{result?.wrong}</div>
               </div>
-              <div className="text-end font-medium">{result?.wrong}</div>
             </div>
-          </div>
+          ) : null}
         </div>
         <div>
           <button
             onClick={() => {
-              removeQuizStorageData();
-              navigate("/quiz");
+              isQuizFinishedValid ? finishQuiz() : backToSession();
             }}
             className="w-52 rounded-lg border-2 py-2 text-sm font-medium transition  duration-200 lg:text-base lg:hover:scale-105 lg:hover:bg-slate-900 lg:hover:text-white"
           >
-            Take Another Quiz
+            {isQuizFinishedValid ? "Take Another Quiz " : "Back to Session"}
           </button>
         </div>
       </dialog>
