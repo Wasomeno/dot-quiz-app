@@ -1,16 +1,10 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
+import { useQuizStorage } from "../hooks/useQuizStorage";
 
-export function QuizRoomCounter() {
-  const authSession = useAuth0();
-  const userQuizData = JSON.parse(
-    localStorage.getItem(authSession.user?.email as string) as string,
-  );
-
-  const [timerCount, setTimerCount] = useState<number>(
-    userQuizData?.timer ?? 180,
-  );
+export function Timer() {
+  const { data, setQuizStorageData, isQuizStorageDataExist } = useQuizStorage();
+  const [timerCount, setTimerCount] = useState<number>(data?.timer ?? 180);
 
   const timerIntervalRef = useRef<number>();
 
@@ -19,22 +13,15 @@ export function QuizRoomCounter() {
   useEffect(() => {
     if (timerCount === -1) {
       navigate(`${location.pathname}?finished=true`);
-    }
-
-    if (userQuizData) {
-      localStorage.setItem(
-        authSession.user?.email as string,
-        JSON.stringify({ ...userQuizData, timer: timerCount }),
-      );
-    }
-
-    if (timerCount !== -1) {
+    } else {
       timerIntervalRef.current = setInterval(
         () => setTimerCount((currentTimer) => currentTimer - 1),
         1000,
       );
     }
-
+    if (isQuizStorageDataExist) {
+      setQuizStorageData({ ...data, timer: timerCount });
+    }
     return () => {
       clearInterval(timerIntervalRef.current);
     };
