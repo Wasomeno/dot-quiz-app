@@ -78,6 +78,8 @@ export function QuizRoomPage() {
   }
 
   useEffect(() => {
+    if (questionIndex === 10) navigate(`${location.pathname}?finished=true`);
+
     if (!isQuizStorageDataExist && !isQuestionsLoading) {
       setQuizStorageData({
         ...quizStorageData,
@@ -98,7 +100,7 @@ export function QuizRoomPage() {
   if (parseInt(categoryId) < 9 || parseInt(categoryId) > 18)
     return <CategoryNotValidScreen />;
 
-  if (questionIndex === 10 || isQuizFinished) return <QuizFinishedDialog />;
+  if (isQuizFinished) return <QuizFinishedDialog />;
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-5 lg:gap-10">
