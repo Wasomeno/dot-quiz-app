@@ -27,9 +27,10 @@ export function SessionExistAlertModal() {
                     : ((data?.timer as number) % 60).toString()
                 } Left`}
 
-              {data.timer &&
-                data.answers?.length === data.questions?.length &&
-                "Finished"}
+              {data.timer === -1 ||
+              data.answers?.length === data.questions?.length
+                ? "Finished"
+                : null}
             </div>
             <div className="text-sm font-medium lg:text-base">
               {data?.answers?.length} / 10 Answered

@@ -33,6 +33,9 @@ export function QuizRoomPage() {
   const { categoryId } = useParams() as { categoryId: string };
   const [urlSearchParams] = useSearchParams();
 
+  const isCategoryValid =
+    parseInt(categoryId) >= 9 && parseInt(categoryId) <= 18;
+
   const { data: questionsData, isLoading: isQuestionsLoading } = useQuery<
     Question[]
   >(
@@ -44,7 +47,7 @@ export function QuizRoomPage() {
         .then((response) => response.json())
         .then((response) => response.results),
     {
-      enabled: !isQuizStorageDataExist,
+      enabled: !isQuizStorageDataExist && isCategoryValid,
       refetchOnWindowFocus: false,
     },
   );
@@ -53,6 +56,7 @@ export function QuizRoomPage() {
 
   const questions = quizStorageData?.questions ?? questionsData;
   const activeQuestion = questions && questions[questionIndex];
+
   const isQuizFinished = urlSearchParams.get("finished") !== null;
 
   function selectAnswer(answer: string) {
@@ -96,11 +100,11 @@ export function QuizRoomPage() {
     }
   }, [isQuestionsLoading]);
 
-  if (parseInt(categoryId) < 9 || parseInt(categoryId) > 18)
-    return <CategoryNotValidScreen />;
+  if (!isCategoryValid) return <CategoryNotValidScreen />;
 
   if (isQuizFinished) return <QuizFinishedDialog />;
 
+  if (questionIndex === 10 || quizStorageData?.timer === -1) return;
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-5 lg:gap-10">
       {isQuestionsLoading && !isQuizStorageDataExist ? (
